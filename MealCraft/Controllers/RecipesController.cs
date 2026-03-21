@@ -54,10 +54,60 @@ public class RecipesController : Controller
         return View(recipe);
     }
 
+    // [HttpGet]
+    // public IActionResult Create()
+    // {
+    //     ViewData["ActivePage"] = "Recipes";
+    //     return View();
+    // }
+    
     [HttpGet]
     public IActionResult Create()
     {
         ViewData["ActivePage"] = "Recipes";
-        return View();
+        return View(new CreateRecipeViewModel());
+    }
+
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    public IActionResult Create(CreateRecipeViewModel model)
+    {
+        ViewData["ActivePage"] = "Recipes";
+
+        if (!ModelState.IsValid)
+            return View(model);
+
+        // Build a Recipe and add it to the service
+        var recipe = new Recipe
+        {
+            Id = _recipeService.GetAll().Max(r => r.Id) + 1,
+            Name = model.Name,
+            Category = model.Category,
+            PrepTime = model.PrepTime,
+            Calories = model.Calories,
+            Difficulty = model.Difficulty,
+            Protein = model.Protein,
+            Carbs = model.Carbs,
+            Fat = model.Fat,
+            Image = model.ImageUrl ?? "https://placehold.co/800x450?text=No+Image",
+            Ingredients = model.Ingredients
+                .Split(',', StringSplitOptions.RemoveEmptyEntries)
+                .Select(i => i.Trim())
+                .ToList(),
+            Instructions = model.Instructions
+                .Split('\n', StringSplitOptions.RemoveEmptyEntries)
+                .Select(i => i.Trim())
+                .ToList(),
+            DietaryTags = string.IsNullOrWhiteSpace(model.DietaryTags)
+                ? new List<string>()
+                : model.DietaryTags
+                    .Split(',', StringSplitOptions.RemoveEmptyEntries)
+                    .Select(t => t.Trim())
+                    .ToList()
+        };
+
+        _recipeService.Add(recipe);
+
+        return RedirectToAction(nameof(Index));
     }
 }

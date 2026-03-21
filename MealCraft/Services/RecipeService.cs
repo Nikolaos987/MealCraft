@@ -202,4 +202,9 @@ public class RecipeService
                 && matchesTime && matchesDifficulty && matchesIngredients;
         }).ToList();
     }
+    
+    public void Add(Recipe recipe)
+    {
+        _recipes.Add(recipe);
+    }
 }

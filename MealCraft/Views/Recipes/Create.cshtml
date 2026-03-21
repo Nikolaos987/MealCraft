@@ -1,0 +1,169 @@
+@model MealCraft.Models.CreateRecipeViewModel
+@{
+    ViewData["Title"] = "Нова рецепта";
+}
+
+<div class="container py-4" style="max-width: 760px;">
+
+    <a asp-controller="Recipes" asp-action="Index"
+       class="text-decoration-none text-secondary fw-semibold d-inline-block mb-4">
+        ← Обратно към рецептите
+    </a>
+
+    <div class="card shadow-sm p-4">
+        <h2 class="fw-bold mb-1">Нова рецепта</h2>
+        <p class="text-muted small mb-4">
+            Попълнете формата, за да добавите нова рецепта в платформата.
+        </p>
+
+        <form asp-controller="Recipes" asp-action="Create"
+              method="post" novalidate>
+            @Html.AntiForgeryToken()
+
+            <!-- Name -->
+            <div class="mb-3">
+                <label asp-for="Name" class="form-label fw-semibold">
+                    Име на рецептата
+                </label>
+                <input asp-for="Name" class="form-control"
+                       placeholder="напр. Салата с киноа" />
+                <span asp-validation-for="Name" class="text-danger small"></span>
+            </div>
+
+            <!-- Category + Difficulty -->
+            <div class="row g-3 mb-3">
+                <div class="col-sm-6">
+                    <label asp-for="Category" class="form-label fw-semibold">
+                        Категория
+                    </label>
+                    <select asp-for="Category" class="form-select">
+                        <option value="">— Изберете —</option>
+                        <option value="main">Основни ястия</option>
+                        <option value="snack">Междинно хранене</option>
+                        <option value="dessert">Десерти</option>
+                    </select>
+                    <span asp-validation-for="Category" class="text-danger small"></span>
+                </div>
+                <div class="col-sm-6">
+                    <label asp-for="Difficulty" class="form-label fw-semibold">
+                        Трудност
+                    </label>
+                    <select asp-for="Difficulty" class="form-select">
+                        <option value="">— Изберете —</option>
+                        <option value="easy">Лесно</option>
+                        <option value="medium">Средно</option>
+                        <option value="hard">Трудно</option>
+                    </select>
+                    <span asp-validation-for="Difficulty" class="text-danger small"></span>
+                </div>
+            </div>
+
+            <!-- Prep time + Calories -->
+            <div class="row g-3 mb-3">
+                <div class="col-sm-6">
+                    <label asp-for="PrepTime" class="form-label fw-semibold">
+                        Време за приготвяне (мин)
+                    </label>
+                    <input asp-for="PrepTime" type="number"
+                           class="form-control" placeholder="30" />
+                    <span asp-validation-for="PrepTime" class="text-danger small"></span>
+                </div>
+                <div class="col-sm-6">
+                    <label asp-for="Calories" class="form-label fw-semibold">
+                        Калории
+                    </label>
+                    <input asp-for="Calories" type="number"
+                           class="form-control" placeholder="450" />
+                    <span asp-validation-for="Calories" class="text-danger small"></span>
+                </div>
+            </div>
+
+            <!-- Macros -->
+            <div class="row g-3 mb-3">
+                <div class="col-sm-4">
+                    <label asp-for="Protein" class="form-label fw-semibold">
+                        Протеин (g)
+                    </label>
+                    <input asp-for="Protein" type="number"
+                           class="form-control" placeholder="0" />
+                    <span asp-validation-for="Protein" class="text-danger small"></span>
+                </div>
+                <div class="col-sm-4">
+                    <label asp-for="Carbs" class="form-label fw-semibold">
+                        Въглехидрати (g)
+                    </label>
+                    <input asp-for="Carbs" type="number"
+                           class="form-control" placeholder="0" />
+                    <span asp-validation-for="Carbs" class="text-danger small"></span>
+                </div>
+                <div class="col-sm-4">
+                    <label asp-for="Fat" class="form-label fw-semibold">
+                        Мазнини (g)
+                    </label>
+                    <input asp-for="Fat" type="number"
+                           class="form-control" placeholder="0" />
+                    <span asp-validation-for="Fat" class="text-danger small"></span>
+                </div>
+            </div>
+
+            <!-- Image URL -->
+            <div class="mb-3">
+                <label asp-for="ImageUrl" class="form-label fw-semibold">
+                    URL на снимка
+                    <span class="text-muted fw-normal">(незадължително)</span>
+                </label>
+                <input asp-for="ImageUrl" type="url" class="form-control"
+                       placeholder="https://example.com/image.jpg" />
+                <span asp-validation-for="ImageUrl" class="text-danger small"></span>
+            </div>
+
+            <!-- Dietary tags -->
+            <div class="mb-3">
+                <label asp-for="DietaryTags" class="form-label fw-semibold">
+                    Диетични тагове
+                    <span class="text-muted fw-normal">(незадължително)</span>
+                </label>
+                <input asp-for="DietaryTags" class="form-control"
+                       placeholder="Vegan, Gluten Free, High Protein" />
+                <div class="form-text">Разделени със запетая</div>
+            </div>
+
+            <!-- Ingredients -->
+            <div class="mb-3">
+                <label asp-for="Ingredients" class="form-label fw-semibold">
+                    Съставки
+                </label>
+                <textarea asp-for="Ingredients" class="form-control" rows="3"
+                          placeholder="пилешко, лимон, чесън, зехтин"></textarea>
+                <div class="form-text">Разделени със запетая</div>
+                <span asp-validation-for="Ingredients" class="text-danger small"></span>
+            </div>
+
+            <!-- Instructions -->
+            <div class="mb-4">
+                <label asp-for="Instructions" class="form-label fw-semibold">
+                    Начин на приготвяне
+                </label>
+                <textarea asp-for="Instructions" class="form-control" rows="6"
+                          placeholder="Загрейте фурната до 200°C.&#10;Подправете пилешкото.&#10;Печете 35 минути."></textarea>
+                <div class="form-text">По една стъпка на ред</div>
+                <span asp-validation-for="Instructions" class="text-danger small"></span>
+            </div>
+
+            <!-- Actions -->
+            <div class="d-flex gap-2 justify-content-end">
+                <a asp-controller="Recipes" asp-action="Index"
+                   class="btn btn-outline-secondary px-4">Отказ</a>
+                <button type="submit" class="btn btn-primary px-4">
+                    <i class="bi bi-plus-lg me-1"></i> Създай рецепта
+                </button>
+            </div>
+
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    @* Client-side validation (works with data annotations automatically) *@
+    <partial name="_ValidationScriptsPartial" />
+}

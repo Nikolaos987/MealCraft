@@ -1,3 +1,4 @@
+using MealCraft.Models;
 using Microsoft.AspNetCore.Mvc;
 
 namespace MealCraft.Controllers;
@@ -6,7 +7,7 @@ public class AccountController : Controller
 {
     public IActionResult Login()  => View();
     public IActionResult Register() => View();
-    public IActionResult Profile() => View();
+    // public IActionResult Profile() => View();
 
     [HttpPost]
     public IActionResult Login(string username, string password)
@@ -24,4 +25,20 @@ public class AccountController : Controller
         return RedirectToAction("Index", "Home");
     }
 
+    [HttpGet]
+    public IActionResult Profile()
+    {
+        return View(new ProfileViewModel());
+    }
+
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    public IActionResult Profile(ProfileViewModel model)
+    {
+        if (!ModelState.IsValid)
+            return View(model);
+
+        // Profile saved — redirect home for now
+        return RedirectToAction("Index", "Home");
+    }
 }
