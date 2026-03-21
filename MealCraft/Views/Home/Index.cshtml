@@ -1,0 +1,117 @@
+@{
+    ViewData["Title"] = "Начална страница";
+    ViewData["ActivePage"] = "Home";
+
+    var categories = new[]
+    {
+        new { Name = "Основни ястия",        Count = 245 },
+        new { Name = "Междинни хранения",    Count = 189 },
+        new { Name = "Десерти",              Count = 156 },
+        new { Name = "Напитки",              Count = 98  },
+        new { Name = "Вегетарианско",        Count = 312 },
+        new { Name = "Без глутен",           Count = 234 },
+        new { Name = "Нисковъглехидратно",   Count = 198 },
+        new { Name = "Спортно хранене",      Count = 145 },
+    };
+}
+
+<!-- HERO -->
+<section class="py-5 text-center"
+         style="background: linear-gradient(to bottom, #cbeef3, #ffffff);">
+    <div class="container py-4">
+        <h1 class="display-4 fw-bold mb-3">Вашият личен асистент за хранене</h1>
+        <p class="lead text-muted mx-auto mb-4" style="max-width: 600px;">
+            Открийте персонализирани хранителни планове и рецепти, съобразени с
+            вашите здравословни цели, хранителни предпочитания и начин на живот
+        </p>
+        <div class="d-flex gap-3 justify-content-center flex-wrap">
+            <a asp-controller="Account" asp-action="Register"
+               class="btn btn-primary btn-lg px-4">Създай акаунт</a>
+            <a asp-controller="Recipes" asp-action="Index"
+               class="btn btn-outline-secondary btn-lg px-4">Разгледай рецепти</a>
+        </div>
+    </div>
+</section>
+
+<!-- FEATURES -->
+<section class="py-5">
+    <div class="container">
+        <div class="row g-4">
+
+            <div class="col-md-4">
+                <div class="card h-100 border shadow-sm p-3">
+                    <div class="card-body">
+                        <div class="fs-1 mb-3">🍏</div>
+                        <h5 class="card-title fw-semibold">Персонализиран план</h5>
+                        <p class="card-text text-muted">
+                            Получавайте препоръки за хранене въз основа на вашия
+                            уникален здравословен профил и цели
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-4">
+                <div class="card h-100 border shadow-sm p-3">
+                    <div class="card-body">
+                        <div class="fs-1 mb-3">🍽️</div>
+                        <h5 class="card-title fw-semibold">Разнообразни рецепти</h5>
+                        <p class="card-text text-muted">
+                            Достъп до хиляди рецепти във всички категории и
+                            диетични предпочитания
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-4">
+                <div class="card h-100 border shadow-sm p-3">
+                    <div class="card-body">
+                        <div class="fs-1 mb-3">❤️</div>
+                        <h5 class="card-title fw-semibold">Фокус върху здравето</h5>
+                        <p class="card-text text-muted">
+                            Следете храненето си, алергиите и останете в синхрон
+                            с вашия път към благополучието
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</section>
+
+<!-- CATEGORIES -->
+<section class="py-5" style="background-color: #cbeef3;">
+    <div class="container">
+        <h2 class="text-center fw-bold mb-4">Разгледайте рецептите по категории</h2>
+        <div class="row g-3">
+            @foreach (var cat in categories)
+            {
+                <div class="col-6 col-md-3">
+                    <a asp-controller="Recipes" asp-action="Index"
+                       asp-route-category="@cat.Name"
+                       class="text-decoration-none">
+                        <div class="card border h-100 p-3 category-card">
+                            <h6 class="fw-semibold mb-1">@cat.Name</h6>
+                            <p class="text-muted small mb-0">@cat.Count рецепти</p>
+                        </div>
+                    </a>
+                </div>
+            }
+        </div>
+    </div>
+</section>
+
+@section Styles {
+    <style>
+        .category-card {
+            transition: border-color 0.2s, transform 0.2s;
+            cursor: pointer;
+        }
+        .category-card:hover {
+            border-color: #f49cbb !important;
+            transform: translateY(-2px);
+        }
+    </style>
+}

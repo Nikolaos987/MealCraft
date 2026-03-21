@@ -1,0 +1,50 @@
+@{
+    ViewData["Title"] = "Вход";
+}
+
+<div class="min-vh-100 d-flex align-items-center justify-content-center py-4"
+     style="background:#fdf6fb;">
+    <div class="row w-100 g-4 justify-content-center" style="max-width:900px;">
+
+        <!-- Left welcome panel -->
+        <div class="col-md-5 d-flex align-items-center">
+            <div>
+                <h1 class="fw-bold mb-3" style="color:#a75fff;">Добре дошли!</h1>
+                <p class="text-muted">
+                    Радваме се да ви видим отново. Влезте в профила си, за да
+                    достъпите вашите персонализирани планове и рецепти.
+                </p>
+                <p class="text-muted small fst-italic">
+                    Съвет: Използвайте потребителското си име и парола.
+                </p>
+            </div>
+        </div>
+
+        <!-- Right form card -->
+        <div class="col-md-5">
+            <div class="card shadow p-4">
+                <h3 class="text-center mb-4">Вход</h3>
+                <form asp-controller="Account" asp-action="Login" method="post">
+                    <div class="mb-3">
+                        <label class="form-label">Потребителско име</label>
+                        <input name="username" type="text"
+                               class="form-control"
+                               placeholder="Потребителско име" required />
+                    </div>
+                    <div class="mb-4">
+                        <label class="form-label">Парола</label>
+                        <input name="password" type="password"
+                               class="form-control"
+                               placeholder="Парола" required />
+                    </div>
+                    <button type="submit" class="btn btn-primary w-100">Вход</button>
+                </form>
+                <p class="text-center mt-3 small">
+                    Нямате акаунт?
+                    <a asp-controller="Account" asp-action="Register">Регистрирайте се</a>
+                </p>
+            </div>
+        </div>
+
+    </div>
+</div>

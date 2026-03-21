@@ -1,0 +1,99 @@
+@model MealCraft.Models.Recipe
+@{
+    ViewData["Title"] = Model.Name;
+}
+
+<div class="container py-4" style="max-width: 900px;">
+
+    <a asp-controller="Recipes" asp-action="Index"
+       class="text-decoration-none text-secondary fw-semibold d-inline-block mb-3">
+        ← Обратно към рецептите
+    </a>
+
+    <!-- Hero image -->
+    <div class="rounded-3 overflow-hidden mb-4" style="aspect-ratio:16/9;">
+        <img src="@Model.Image" alt="@Model.Name"
+             class="w-100 h-100 object-fit-cover" />
+    </div>
+
+    <!-- Header -->
+    <div class="mb-3">
+        <div class="d-flex align-items-center justify-content-between gap-3 flex-wrap mb-2">
+            <h1 class="fw-bold mb-0">@Model.Name</h1>
+            <div class="d-flex gap-2">
+                <span class="badge bg-dark text-capitalize fs-6">@Model.Difficulty</span>
+                <button class="btn btn-danger btn-sm">
+                    <i class="bi bi-trash me-1"></i>Изтрий
+                </button>
+            </div>
+        </div>
+        <div class="d-flex flex-wrap gap-2 mb-3">
+            @foreach (var tag in Model.DietaryTags)
+            {
+                <span class="badge border text-dark fw-normal">@tag</span>
+            }
+        </div>
+        <div class="d-flex gap-4 text-muted">
+            <span>⏱ <strong>@Model.PrepTime</strong> мин</span>
+            <span>🔥 <strong>@Model.Calories</strong> кал</span>
+            <span>👨‍🍳 <strong class="text-capitalize">@Model.Difficulty</strong></span>
+        </div>
+    </div>
+
+    <!-- Nutrition -->
+    <div class="card shadow-sm mb-4">
+        <div class="card-body">
+            <h5 class="card-title fw-semibold mb-3">Хранителна стойност</h5>
+            <div class="row g-3 text-center">
+                @foreach (var (label, value, unit) in new[] {
+                    ("Калории",      Model.Calories.ToString(), ""),
+                    ("Протеин",      Model.Protein.ToString(),  "g"),
+                    ("Въглехидрати", Model.Carbs.ToString(),    "g"),
+                    ("Мазнини",      Model.Fat.ToString(),      "g")
+                })
+                {
+                    <div class="col-6 col-md-3">
+                        <div class="bg-light rounded p-3">
+                            <div class="text-muted small">@label</div>
+                            <strong class="fs-5">@value@unit</strong>
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+
+    <!-- Ingredients -->
+    <div class="card shadow-sm mb-4">
+        <div class="card-body">
+            <h5 class="card-title fw-semibold mb-3">Съставки</h5>
+            <ul class="list-unstyled mb-0">
+                @foreach (var ingredient in Model.Ingredients)
+                {
+                    <li class="py-1 border-bottom d-flex align-items-center gap-2">
+                        <span class="text-primary">•</span> @ingredient
+                    </li>
+                }
+            </ul>
+        </div>
+    </div>
+
+    <!-- Instructions -->
+    <div class="card shadow-sm mb-4">
+        <div class="card-body">
+            <h5 class="card-title fw-semibold mb-3">Начин на приготвяне</h5>
+            <ol class="list-unstyled mb-0">
+                @for (int i = 0; i < Model.Instructions.Count; i++)
+                {
+                    <li class="d-flex gap-3 align-items-start mb-3">
+                        <span class="badge bg-primary rounded-circle d-flex align-items-center
+                                     justify-content-center flex-shrink-0"
+                              style="width:32px;height:32px;font-size:14px;">@(i + 1)</span>
+                        <p class="mb-0 pt-1">@Model.Instructions[i]</p>
+                    </li>
+                }
+            </ol>
+        </div>
+    </div>
+
+</div>

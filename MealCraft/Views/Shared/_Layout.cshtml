@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="bg">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - MealCraft</title>
+
+    <!-- Bootstrap 5 -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <!-- Bootstrap Icons -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet" />
+
+    @RenderSection("Styles", required: false)
+</head>
+<body>
+
+<!-- NAVBAR -->
+<nav class="navbar navbar-expand-md sticky-top" style="background: rgba(242, 210, 245, 0.85); backdrop-filter: blur(8px); border-bottom: 1px solid #e5e7eb;">
+    <div class="container-xl">
+
+        <!-- Brand / Logo -->
+        <a class="navbar-brand fw-semibold" asp-controller="Home" asp-action="Index">
+            🐱 <span>MealCraft</span>
+        </a>
+
+        <!-- Mobile toggle -->
+        <button class="navbar-toggler" type="button"
+                data-bs-toggle="collapse" data-bs-target="#mainNav">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <!-- Nav links -->
+        <div class="collapse navbar-collapse" id="mainNav">
+            <ul class="navbar-nav me-auto gap-1">
+                <li class="nav-item">
+                    <a class="nav-link @(ViewData["ActivePage"]?.ToString() == "Home" ? "active fw-semibold" : "")"
+                       asp-controller="Home" asp-action="Index">Начална страница</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link @(ViewData["ActivePage"]?.ToString() == "Recipes" ? "active fw-semibold" : "")"
+                       asp-controller="Recipes" asp-action="Index">Рецепти</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link @(ViewData["ActivePage"]?.ToString() == "About" ? "active fw-semibold" : "")"
+                       asp-controller="Home" asp-action="About">За нас</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link @(ViewData["ActivePage"]?.ToString() == "Contact" ? "active fw-semibold" : "")"
+                       asp-controller="Home" asp-action="Contact">Контакти</a>
+                </li>
+            </ul>
+
+            <!-- Avatar Dropdown -->
+            <div class="dropdown">
+                <button class="btn p-0 border-0 bg-transparent" data-bs-toggle="dropdown">
+                    <div class="rounded-circle bg-primary text-white d-flex align-items-center justify-content-center"
+                         style="width:36px; height:36px; font-size:18px;">🐱</div>
+                </button>
+                <ul class="dropdown-menu dropdown-menu-end">
+                    <li><a class="dropdown-item" asp-controller="Account" asp-action="Profile">Моят профил</a></li>
+                    <li><hr class="dropdown-divider" /></li>
+                    <li><a class="dropdown-item" asp-controller="Account" asp-action="Login">Вход</a></li>
+                    <li><a class="dropdown-item" asp-controller="Account" asp-action="Register">Регистрация</a></li>
+                </ul>
+            </div>
+        </div>
+
+    </div>
+</nav>
+
+<!-- PAGE CONTENT -->
+<main>
+    @RenderBody()
+</main>
+
+<!-- FOOTER -->
+<footer class="border-top py-4 text-center text-muted" style="font-size: 14px;">
+    <p class="mb-0">&copy; 2025 MealCraft. All rights reserved.</p>
+</footer>
+
+<!-- Bootstrap JS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+@RenderSection("Scripts", required: false)
+
+</body>
+</html>

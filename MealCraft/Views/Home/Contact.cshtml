@@ -1,0 +1,150 @@
+@{
+    ViewData["Title"] = "Контакти";
+    ViewData["ActivePage"] = "Contact";
+}
+
+<!-- Hero -->
+<section class="py-5 text-center"
+         style="background: linear-gradient(to bottom, #ebadbd, #d69cec);">
+    <div class="container">
+        <h1 class="display-5 fw-bold mb-2">Свържете се с нас</h1>
+        <p class="lead text-muted">
+            Имате въпроси или предложения? Ще се радваме да се свържете с нас.
+        </p>
+    </div>
+</section>
+
+<!-- Contact section -->
+<section class="py-5" style="background:#d69cec;">
+    <div class="container">
+        <div class="row g-4">
+
+            <!-- Form card -->
+            <div class="col-lg-8">
+                <div class="card shadow-sm p-4">
+                    <h4 class="fw-semibold mb-1">Изпратете ни съобщение</h4>
+                    <p class="text-muted small mb-4">
+                        Попълнете формата и ще се свържем с вас до 24 часа.
+                    </p>
+
+                    <!-- Success alert (hidden by default) -->
+                    <div id="successAlert" class="alert alert-success d-none text-center" role="alert">
+                        <i class="bi bi-envelope-check fs-3 d-block mb-2"></i>
+                        <strong>Съобщението е изпратено!</strong><br/>
+                        Ще ви отговорим в рамките на 24 часа.
+                    </div>
+
+                    <form id="contactForm">
+                        <div class="row g-3 mb-3">
+                            <div class="col-sm-6">
+                                <label class="form-label">Първо име</label>
+                                <input type="text" class="form-control"
+                                       placeholder="Петър" required />
+                            </div>
+                            <div class="col-sm-6">
+                                <label class="form-label">Фамилия</label>
+                                <input type="text" class="form-control"
+                                       placeholder="Паркър" required />
+                            </div>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label">Email</label>
+                            <input type="email" class="form-control"
+                                   placeholder="peter@example.com" required />
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label">Тема</label>
+                            <input type="text" class="form-control"
+                                   placeholder="Как можем да ви помогнем?" required />
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label">Съобщение</label>
+                            <textarea class="form-control" rows="5"
+                                      placeholder="Споделете подробности…"
+                                      required></textarea>
+                        </div>
+
+                        <button type="submit" class="btn btn-primary w-100">
+                            Изпрати съобщение
+                        </button>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Info cards -->
+            <div class="col-lg-4 d-flex flex-column gap-3">
+                <div class="card shadow-sm p-3">
+                    <i class="bi bi-envelope fs-2 text-primary mb-2"></i>
+                    <h6 class="fw-semibold">Email</h6>
+                    <p class="mb-0 fw-semibold">support@mealcraft.com</p>
+                    <p class="text-muted small mb-0">Ще отговорим в рамките на 24 часа</p>
+                </div>
+                <div class="card shadow-sm p-3">
+                    <i class="bi bi-telephone fs-2 text-primary mb-2"></i>
+                    <h6 class="fw-semibold">Телефон</h6>
+                    <p class="mb-0 fw-semibold">089 674 1367</p>
+                    <p class="text-muted small mb-0">Понеделник – Петък, 9:00 – 18:00</p>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</section>
+
+<!-- FAQ -->
+<section class="py-5" style="background:#cbeef3;">
+    <div class="container" style="max-width:800px;">
+        <h2 class="text-center fw-bold mb-4">Често задавани въпроси</h2>
+        <div class="accordion" id="faqAccordion">
+            @{
+                var faqs = new[] {
+                    ("Как да си създам личен план за хранене?",
+                     "Попълнете здравния си профил и ние ще ви препоръчаме ястия."),
+                    ("Мога ли да филтрирам по диетични изисквания?",
+                     "Да! Вегетариански, вегански, безглутенови и други."),
+                    ("Подходящ ли е MealCraft за спортисти?",
+                     "Да! Предлагаме високопротеинови и възстановителни ястия."),
+                    ("Колко често се актуализират рецептите?",
+                     "Нови рецепти се добавят редовно въз основа на обратна връзка.")
+                };
+                for (int i = 0; i < faqs.Length; i++)
+                {
+                    var (q, a) = faqs[i];
+                    <div class="accordion-item mb-2 border rounded">
+                        <h2 class="accordion-header">
+                            <button class="accordion-button @(i > 0 ? "collapsed" : "")"
+                                    type="button"
+                                    data-bs-toggle="collapse"
+                                    data-bs-target="#faq@(i)">
+                                @q
+                            </button>
+                        </h2>
+                        <div id="faq@(i)"
+                             class="accordion-collapse collapse @(i == 0 ? "show" : "")"
+                             data-bs-parent="#faqAccordion">
+                            <div class="accordion-body text-muted">@a</div>
+                        </div>
+                    </div>
+                }
+            }
+        </div>
+    </div>
+</section>
+
+@section Scripts {
+    <script>
+        document.getElementById('contactForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            this.classList.add('d-none');
+            document.getElementById('successAlert').classList.remove('d-none');
+            setTimeout(() => {
+                document.getElementById('successAlert').classList.add('d-none');
+                this.classList.remove('d-none');
+                this.reset();
+            }, 5000);
+        });
+    </script>
+}

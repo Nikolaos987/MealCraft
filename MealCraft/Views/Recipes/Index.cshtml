@@ -1,0 +1,229 @@
+@model MealCraft.Models.RecipeFilterViewModel
+@{
+    ViewData["Title"] = "Рецепти";
+    var categories = new[] {
+        ("all","Всички категории"),
+        ("main","Основни ястия"),
+        ("snack","Междинно хранене"),
+        ("dessert","Десерти")
+    };
+    var difficulties = new[] {
+        ("all","Всички нива"),
+        ("easy","Лесно"),
+        ("medium","Средно"),
+        ("hard","Трудно")
+    };
+}
+
+<!-- Page Header -->
+<section class="py-5" style="background: #eec7d0;">
+    <div class="container">
+        <h1 class="fw-bold mb-2">Преглед на рецепти</h1>
+        <p class="text-muted mb-3">
+            Открийте вкусни рецепти, съобразени с вашите хранителни нужди.
+        </p>
+        <div class="d-flex gap-2 flex-wrap align-items-center">
+            <div class="input-group" style="max-width:400px;">
+                <span class="input-group-text bg-white">
+                    <i class="bi bi-search"></i>
+                </span>
+                <input id="searchInput" type="text" class="form-control"
+                       placeholder="Потърсете рецепти или продукти 😋"
+                       value="@Model.Search" />
+            </div>
+            <a asp-controller="Recipes" asp-action="Create"
+               class="btn btn-primary">
+                <i class="bi bi-plus-lg me-1"></i> Нова рецепта
+            </a>
+        </div>
+    </div>
+</section>
+
+<!-- Content -->
+<section class="py-4" style="background: linear-gradient(to bottom, #eec7d0, #d69cec);">
+    <div class="container">
+        <div class="row g-4">
+
+            <!-- Filters sidebar -->
+            <div class="col-lg-3">
+                <div class="card p-3 shadow-sm sticky-top" style="top: 80px;">
+                    <h5 class="fw-semibold mb-3">Филтри</h5>
+
+                    <div class="mb-3">
+                        <label class="form-label small">Категория</label>
+                        <select id="categoryFilter" class="form-select form-select-sm">
+                            @foreach (var (val, label) in categories)
+                            {
+                                if (Model.Category == val)
+                                {
+                                    <option value="@val" selected>@label</option>
+                                }
+                                else
+                                {
+                                    <option value="@val">@label</option>
+                                }
+                            }
+                        </select>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label small">
+                            Макс калории: <strong id="caloriesValue">@Model.MaxCalories</strong>
+                        </label>
+                        <input type="range" class="form-range" id="caloriesFilter"
+                               min="100" max="1000" step="50" value="@Model.MaxCalories" />
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label small">
+                            Макс време: <strong id="timeValue">@Model.MaxTime</strong> мин
+                        </label>
+                        <input type="range" class="form-range" id="timeFilter"
+                               min="5" max="120" step="5" value="@Model.MaxTime" />
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label small">Трудност</label>
+                        <select id="difficultyFilter" class="form-select form-select-sm">
+                            @foreach (var (val, label) in difficulties)
+                            {
+                                if (Model.Difficulty == val)
+                                {
+                                    <option value="@val" selected>@label</option>
+                                }
+                                else
+                                {
+                                    <option value="@val">@label</option>
+                                }
+                            }
+                        </select>
+                    </div>
+
+                    <div class="mb-2">
+                        <label class="form-label small">Вашите продукти</label>
+                        <textarea id="excludeFilter" class="form-control form-control-sm"
+                                  rows="2"
+                                  placeholder="яйца, пилешко, домати..">@Model.ExcludeIngredients</textarea>
+                        <div class="form-text">с , между продуктите</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Recipe grid -->
+            <div class="col-lg-9">
+                <p class="text-muted small mb-3" id="countText">
+                    Показване на @Model.Recipes.Count от @Model.TotalCount рецепти
+                </p>
+
+                <div class="row g-3" id="recipesGrid">
+                    @foreach (var r in Model.Recipes)
+                    {
+                        <div class="col-sm-6 col-xl-4">
+                            <a asp-controller="Recipes" asp-action="Details"
+                               asp-route-id="@r.Id"
+                               class="text-decoration-none text-dark">
+                                <div class="card h-100 shadow-sm recipe-card">
+                                    <img src="@r.Image" alt="@r.Name"
+                                         class="card-img-top"
+                                         style="height:160px; object-fit:cover;" />
+                                    <div class="card-body pb-2">
+                                        <div class="d-flex justify-content-between align-items-start mb-1">
+                                            <h6 class="card-title fw-semibold mb-0">@r.Name</h6>
+                                            <button class="btn btn-sm btn-danger py-0 px-2 delete-btn"
+                                                    data-id="@r.Id">
+                                                <i class="bi bi-trash"></i>
+                                            </button>
+                                        </div>
+
+                                        <div class="mb-2">
+                                            @foreach (var tag in r.DietaryTags.Take(2))
+                                            {
+                                                <span class="badge border text-dark fw-normal me-1">@tag</span>
+                                            }
+                                        </div>
+
+                                        <div class="d-flex gap-3 text-muted small mb-2">
+                                            <span>⏱ @r.PrepTime мин</span>
+                                            <span>🔥 @r.Calories кал</span>
+                                        </div>
+                                    </div>
+
+                                    <div class="card-footer bg-transparent border-top">
+                                        <div class="row text-center small">
+                                            <div class="col">
+                                                <div class="text-muted">Протеин</div>
+                                                <strong>@r.Protein g</strong>
+                                            </div>
+                                            <div class="col">
+                                                <div class="text-muted">Въглехидрати</div>
+                                                <strong>@r.Carbs g</strong>
+                                            </div>
+                                            <div class="col">
+                                                <div class="text-muted">Мазнини</div>
+                                                <strong>@r.Fat g</strong>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </a>
+                        </div>
+                    }
+                </div>
+
+                @if (!Model.Recipes.Any())
+                {
+                    <div class="text-center py-5 text-muted" id="emptyState">
+                        <p class="mb-1">Не са намерени рецепти с вашите изисквания.</p>
+                        <small>Опитайте се да смените филтрите.</small>
+                    </div>
+                }
+            </div>
+
+        </div>
+    </div>
+</section>
+
+@section Styles {
+    <style>
+        .recipe-card { transition: transform 0.2s, box-shadow 0.2s; }
+        .recipe-card:hover { transform: translateY(-3px); box-shadow: 0 6px 20px rgba(0,0,0,0.12) !important; }
+    </style>
+}
+
+@section Scripts {
+    <script>
+        // Live filter — rebuilds query string and reloads
+        function applyFilters() {
+            const params = new URLSearchParams({
+                search:             document.getElementById('searchInput').value,
+                category:           document.getElementById('categoryFilter').value,
+                maxCalories:        document.getElementById('caloriesFilter').value,
+                maxTime:            document.getElementById('timeFilter').value,
+                difficulty:         document.getElementById('difficultyFilter').value,
+                excludeIngredients: document.getElementById('excludeFilter').value,
+            });
+            window.location.search = params.toString();
+        }
+
+        // Range label updates (instant, no reload)
+        document.getElementById('caloriesFilter')
+            .addEventListener('input', e =>
+                document.getElementById('caloriesValue').textContent = e.target.value);
+        document.getElementById('timeFilter')
+            .addEventListener('input', e =>
+                document.getElementById('timeValue').textContent = e.target.value);
+
+        // Trigger reload on filter change (debounced for text inputs)
+        let debounceTimer;
+        ['searchInput','excludeFilter'].forEach(id =>
+            document.getElementById(id).addEventListener('input', () => {
+                clearTimeout(debounceTimer);
+                debounceTimer = setTimeout(applyFilters, 500);
+            })
+        );
+        ['categoryFilter','difficultyFilter'].forEach(id =>
+            document.getElementById(id).addEventListener('change', applyFilters));
+        ['caloriesFilter','timeFilter'].forEach(id =>
+            document.getElementById(id).addEventListener('change', applyFilters));
+    </script>
+}

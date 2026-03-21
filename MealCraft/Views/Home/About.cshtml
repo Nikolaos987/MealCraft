@@ -1,0 +1,82 @@
+@{
+    ViewData["Title"] = "За нас";
+    ViewData["ActivePage"] = "About";
+}
+
+<!-- Hero -->
+<section class="py-5 text-center"
+         style="background: linear-gradient(to bottom, #ebadbd, #d69cec);">
+    <div class="container">
+        <h1 class="display-5 fw-bold mb-3">Какво е MealCraft</h1>
+        <p class="lead">
+            Вашият доверен партньор за постигане на оптимално здраве чрез
+            персонализирано хранене.
+        </p>
+    </div>
+</section>
+
+<!-- Mission -->
+<section class="py-5" style="background:#d69cec;">
+    <div class="container" style="max-width:800px;">
+        <div class="card shadow-sm p-4" style="background:#a9e0e7; border-color:#a1e4ec;">
+            <h2 class="fw-semibold mb-3">Нашата цел</h2>
+            <p class="text-muted">
+                В MealCraft вярваме, че правилното хранене е основата на
+                здравословния и пълноценен живот. Нашата мисия е да направим
+                персонализираното хранене достъпно за всеки.
+            </p>
+            <p class="text-muted mb-0">
+                Ние разбираме, че всеки човек е уникален, с различни цели,
+                алергии и хранителни нужди. Затова създадохме платформа,
+                която се адаптира към вас.
+            </p>
+        </div>
+    </div>
+</section>
+
+<!-- Values -->
+<section class="py-5" style="background:#d69cec;">
+    <div class="container">
+        <h2 class="text-center fw-bold mb-4">Водещи принципи</h2>
+        <div class="row g-4">
+            @foreach (var (icon, title, text) in new[] {
+                ("bi-bullseye",    "Персонализация", "Хранителни планове, съобразени с вашите индивидуални нужди."),
+                ("bi-people",      "Достъпност",     "Правим здравословното хранене лесно и постижимо за всеки."),
+                ("bi-heart",       "Благополучие",   "Подкрепяме вашето здраве чрез научно обосновани препоръки."),
+                ("bi-graph-up",    "Прогрес",        "Помагаме ви да постигнете целите си чрез устойчиви навици.")
+            })
+            {
+                <div class="col-sm-6 col-lg-3">
+                    <div class="card h-100 p-3 shadow-sm"
+                         style="background:#a9e0e7; border-color:#a1e4ec;">
+                        <i class="bi @icon fs-2 text-primary mb-2"></i>
+                        <h5 class="fw-semibold">@title</h5>
+                        <p class="text-muted small mb-0">@text</p>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</section>
+
+<!-- Features -->
+<section class="py-5" style="background:#d69cec;">
+    <div class="container" style="max-width:800px;">
+        <h2 class="text-center fw-bold mb-4">Какво предлагаме?</h2>
+        <div class="d-flex flex-column gap-3">
+            @foreach (var (title, text) in new[] {
+                ("Сайт богат на рецепти",       "Стотици рецепти в различни категории."),
+                ("Разширени филтри",             "Филтриране по калории, макронутриенти, трудност и съставки."),
+                ("Индивидуални здравни профили", "Създайте профил за персонализирани препоръки."),
+                ("Планиране, ориентирано към цели", "Хранителни планове за отслабване, мускули и здраве.")
+            })
+            {
+                <div class="card p-3 shadow-sm"
+                     style="background:#a9e0e7; border-color:#a1e4ec;">
+                    <h5 class="fw-semibold mb-1">@title</h5>
+                    <p class="text-muted mb-0 small">@text</p>
+                </div>
+            }
+        </div>
+    </div>
+</section>
