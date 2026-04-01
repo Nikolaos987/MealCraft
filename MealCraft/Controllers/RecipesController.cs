@@ -73,14 +73,10 @@ public class RecipesController : Controller
     public IActionResult Create(CreateRecipeViewModel model)
     {
         ViewData["ActivePage"] = "Recipes";
+        if (!ModelState.IsValid) return View(model);
 
-        if (!ModelState.IsValid)
-            return View(model);
-
-        // Build a Recipe and add it to the service
         var recipe = new Recipe
         {
-            Id = _recipeService.GetAll().Max(r => r.Id) + 1,
             Name = model.Name,
             Category = model.Category,
             PrepTime = model.PrepTime,
@@ -92,22 +88,28 @@ public class RecipesController : Controller
             Image = model.ImageUrl ?? "https://placehold.co/800x450?text=No+Image",
             Ingredients = model.Ingredients
                 .Split(',', StringSplitOptions.RemoveEmptyEntries)
-                .Select(i => i.Trim())
-                .ToList(),
+                .Select((name, _) => new RecipeIngredient
+                {
+                    Name = name.Trim()
+                }).ToList(),
             Instructions = model.Instructions
                 .Split('\n', StringSplitOptions.RemoveEmptyEntries)
-                .Select(i => i.Trim())
-                .ToList(),
+                .Select((text, index) => new RecipeInstruction
+                {
+                    StepNumber = index + 1,
+                    Text = text.Trim()
+                }).ToList(),
             DietaryTags = string.IsNullOrWhiteSpace(model.DietaryTags)
-                ? new List<string>()
+                ? new List<RecipeDietaryTag>()
                 : model.DietaryTags
                     .Split(',', StringSplitOptions.RemoveEmptyEntries)
-                    .Select(t => t.Trim())
-                    .ToList()
+                    .Select(t => new RecipeDietaryTag
+                    {
+                        Tag = t.Trim()
+                    }).ToList()
         };
 
         _recipeService.Add(recipe);
-
         return RedirectToAction(nameof(Index));
     }
 }

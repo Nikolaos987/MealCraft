@@ -30,7 +30,7 @@
         <div class="d-flex flex-wrap gap-2 mb-3">
             @foreach (var tag in Model.DietaryTags)
             {
-                <span class="badge border text-dark fw-normal">@tag</span>
+                <span class="badge border text-dark fw-normal">@tag.Tag</span>
             }
         </div>
         <div class="d-flex gap-4 text-muted">
@@ -71,7 +71,7 @@
                 @foreach (var ingredient in Model.Ingredients)
                 {
                     <li class="py-1 border-bottom d-flex align-items-center gap-2">
-                        <span class="text-primary">•</span> @ingredient
+                        <span class="text-primary">•</span> @ingredient.Name
                     </li>
                 }
             </ul>
@@ -87,9 +87,9 @@
                 {
                     <li class="d-flex gap-3 align-items-start mb-3">
                         <span class="badge bg-primary rounded-circle d-flex align-items-center
-                                     justify-content-center flex-shrink-0"
-                              style="width:32px;height:32px;font-size:14px;">@(i + 1)</span>
-                        <p class="mb-0 pt-1">@Model.Instructions[i]</p>
+                     justify-content-center flex-shrink-0"
+                              style="width:32px;height:32px;font-size:14px;">@Model.Instructions[i].StepNumber</span>
+                        <p class="mb-0 pt-1">@Model.Instructions[i].Text</p>
                     </li>
                 }
             </ol>
