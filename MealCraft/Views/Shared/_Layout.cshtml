@@ -53,14 +53,53 @@
             <!-- Avatar Dropdown -->
             <div class="dropdown">
                 <button class="btn p-0 border-0 bg-transparent" data-bs-toggle="dropdown">
-                    <div class="rounded-circle bg-primary text-white d-flex align-items-center justify-content-center"
-                         style="width:36px; height:36px; font-size:18px;">🐱</div>
+                    <div class="rounded-circle bg-primary text-white d-flex align-items-center
+                     justify-content-center"
+                         style="width:36px; height:36px; font-size:18px;">
+                        @if (Context.Session.GetString("Username") != null)
+                        {
+                            @Context.Session.GetString("Username")![0]
+                        }
+                        else
+                        {
+                            <text>🐱</text>
+                        }
+                    </div>
                 </button>
                 <ul class="dropdown-menu dropdown-menu-end">
-                    <li><a class="dropdown-item" asp-controller="Account" asp-action="Profile">Моят профил</a></li>
-                    <li><hr class="dropdown-divider" /></li>
-                    <li><a class="dropdown-item" asp-controller="Account" asp-action="Login">Вход</a></li>
-                    <li><a class="dropdown-item" asp-controller="Account" asp-action="Register">Регистрация</a></li>
+                    @if (Context.Session.GetInt32("UserId") != null)
+                    {
+                        <li>
+                            <span class="dropdown-item-text fw-semibold text-muted small">
+                                @Context.Session.GetString("Username")
+                            </span>
+                        </li>
+                        <li><hr class="dropdown-divider" /></li>
+                        <li>
+                            <a class="dropdown-item"
+                               asp-controller="Account" asp-action="Profile">
+                                Моят профил
+                            </a>
+                        </li>
+                        <li><hr class="dropdown-divider" /></li>
+                        <li>
+                            <a class="dropdown-item text-danger"
+                               asp-controller="Account" asp-action="Logout">
+                                Изход
+                            </a>
+                        </li>
+                    }
+                    else
+                    {
+                        <li>
+                            <a class="dropdown-item"
+                               asp-controller="Account" asp-action="Login">Вход</a>
+                        </li>
+                        <li>
+                            <a class="dropdown-item"
+                               asp-controller="Account" asp-action="Register">Регистрация</a>
+                        </li>
+                    }
                 </ul>
             </div>
         </div>

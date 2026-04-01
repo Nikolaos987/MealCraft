@@ -12,6 +12,14 @@ builder.Services.AddDbContext<AppDbContext>(options =>
 
 // Keep RecipeService but now it will use the DB
 builder.Services.AddScoped<RecipeService>();
+builder.Services.AddScoped<UserService>();
+
+builder.Services.AddSession(options =>
+{
+    options.IdleTimeout = TimeSpan.FromMinutes(60);
+    options.Cookie.HttpOnly = true;
+    options.Cookie.IsEssential = true;
+});
 
 var app = builder.Build();
 
@@ -24,6 +32,7 @@ if (!app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 app.UseStaticFiles();
+app.UseSession();
 app.UseRouting();
 app.UseAuthorization();
 

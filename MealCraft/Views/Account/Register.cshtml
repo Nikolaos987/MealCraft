@@ -11,10 +11,23 @@
         </p>
 
         <form asp-controller="Account" asp-action="Register" method="post">
+            @Html.AntiForgeryToken()
+
+            @if (!ViewData.ModelState.IsValid)
+            {
+                <div class="alert alert-danger">
+                    @foreach (var error in ViewData.ModelState.Values
+                                  .SelectMany(v => v.Errors))
+                    {
+                        <div>@error.ErrorMessage</div>
+                    }
+                </div>
+            }
+
             <div class="mb-3">
                 <label class="form-label">Потребителско име</label>
                 <input name="username" type="text" class="form-control"
-                       placeholder="Потребителско ви" required />
+                       placeholder="Потребителско име" required />
             </div>
             <div class="mb-3">
                 <label class="form-label">Email</label>
