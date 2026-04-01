@@ -4,7 +4,7 @@ using MealCraft.Services;
 
 namespace MealCraft.Controllers;
 
-public class RecipesController : Controller
+public class RecipesController : BaseController
 {
     private readonly RecipeService _recipeService;
 
@@ -64,6 +64,10 @@ public class RecipesController : Controller
     [HttpGet]
     public IActionResult Create()
     {
+        var userId = HttpContext.Session.GetInt32("UserId");
+        if (userId == null)
+            return RedirectToAction("Login", "Account");
+
         ViewData["ActivePage"] = "Recipes";
         return View(new CreateRecipeViewModel());
     }
@@ -110,6 +114,18 @@ public class RecipesController : Controller
         };
 
         _recipeService.Add(recipe);
+        return RedirectToAction(nameof(Index));
+    }
+    
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    public IActionResult Delete(int id)
+    {
+        var userId = HttpContext.Session.GetInt32("UserId");
+        if (userId == null)
+            return RedirectToAction("Login", "Account");
+
+        _recipeService.Delete(id);
         return RedirectToAction(nameof(Index));
     }
 }

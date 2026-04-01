@@ -2,7 +2,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace MealCraft.Controllers;
 
-public class HomeController : Controller
+public class HomeController : BaseController
 {
     
     public IActionResult Index()

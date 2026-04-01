@@ -1,3 +1,8 @@
+@{
+    var isLoggedIn = (bool)(ViewData["IsLoggedIn"] ?? false);
+    var currentUsername = ViewData["CurrentUsername"] as string;
+}
+
 <!DOCTYPE html>
 <html lang="bg">
 <head>
@@ -56,9 +61,9 @@
                     <div class="rounded-circle bg-primary text-white d-flex align-items-center
                      justify-content-center"
                          style="width:36px; height:36px; font-size:18px;">
-                        @if (Context.Session.GetString("Username") != null)
+                        @if (isLoggedIn && currentUsername != null)
                         {
-                            @Context.Session.GetString("Username")![0]
+                            @currentUsername[0]
                         }
                         else
                         {
@@ -67,11 +72,11 @@
                     </div>
                 </button>
                 <ul class="dropdown-menu dropdown-menu-end">
-                    @if (Context.Session.GetInt32("UserId") != null)
+                    @if (isLoggedIn)
                     {
                         <li>
                             <span class="dropdown-item-text fw-semibold text-muted small">
-                                @Context.Session.GetString("Username")
+                                @currentUsername
                             </span>
                         </li>
                         <li><hr class="dropdown-divider" /></li>

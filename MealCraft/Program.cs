@@ -13,6 +13,7 @@ builder.Services.AddDbContext<AppDbContext>(options =>
 // Keep RecipeService but now it will use the DB
 builder.Services.AddScoped<RecipeService>();
 builder.Services.AddScoped<UserService>();
+builder.Services.AddHttpContextAccessor();
 
 builder.Services.AddSession(options =>
 {

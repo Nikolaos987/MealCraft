@@ -4,7 +4,7 @@ using MealCraft.Services;
 
 namespace MealCraft.Controllers;
 
-public class AccountController : Controller
+public class AccountController : BaseController
 {
     private readonly UserService _userService;
 

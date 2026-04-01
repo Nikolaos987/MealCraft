@@ -20,11 +20,20 @@
     <div class="mb-3">
         <div class="d-flex align-items-center justify-content-between gap-3 flex-wrap mb-2">
             <h1 class="fw-bold mb-0">@Model.Name</h1>
-            <div class="d-flex gap-2">
+            <div class="d-flex gap-2 align-items-center">
                 <span class="badge bg-dark text-capitalize fs-6">@Model.Difficulty</span>
-                <button class="btn btn-danger btn-sm">
-                    <i class="bi bi-trash me-1"></i>Изтрий
-                </button>
+
+                @if ((bool)(ViewData["IsLoggedIn"] ?? false))
+                {
+                    <form asp-controller="Recipes" asp-action="Delete"
+                          asp-route-id="@Model.Id" method="post"
+                          onsubmit="return confirm('Изтриване на @Model.Name?')">
+                        @Html.AntiForgeryToken()
+                        <button type="submit" class="btn btn-danger btn-sm">
+                            <i class="bi bi-trash me-1"></i>Изтрий
+                        </button>
+                    </form>
+                }
             </div>
         </div>
         <div class="d-flex flex-wrap gap-2 mb-3">
